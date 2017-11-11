@@ -1,0 +1,55 @@
+{% extends 'story/base.html' %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="articles-container container-fluid">
+
+    <!-- Albums -->
+    <div class="row">
+        {% if articles %}
+            {% for article in articles %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="">
+                            <img src="{{ article.article_pic.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ article.article_title }}</h2>
+                            <h4>{{ article.author }}</h4>
+                            <h4>{{ article.chapter_set.count }} Parts</h4>
+                            <!-- View Details -->
+                            <a href="{% url 'read' article.id %}" class="btn btn-primary btn-sm" role="button">Read</a>
+                            <form action="" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="album_id" value="{{ article.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                </button>
+                            </form>
+
+                            <form action="" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="album_id" value="{{ article.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'create_article' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add an Article
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
