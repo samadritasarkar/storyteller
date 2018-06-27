@@ -1,0 +1,64 @@
+{% extends 'story/base.html' %}
+{% block title %}{{ article }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Article Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if article.article_pic %}
+                        <img src="{{ article.article_pic.url }}" class="img-responsive">
+                    {% else %}
+                        <h3>No image to display</h3>
+                    {% endif %}
+                    <h1>{{ article.article_title }} <small>{{ article.genre }}</small></h1>
+                    <h2>{{ article.author }}</h2>
+                    <h4>{{ article.chapter_set.count }} Parts</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Comment Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation"><a href="{% url 'detail' article.id %}">View All Chapters</a></li>
+                <li role="presentation"><a href="{% url 'create_chapter' article.id %}">Add New Chapter</a></li>
+                <li role="presentation" class="active"><a href="{% url 'comment' article.id %}">View All Comments</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All Comments</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Comments:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in article.comment_set.all %}
+                            <tr>
+                                <td><b>{{ comment.user.username }}</b> &nbsp {{ comment.text }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

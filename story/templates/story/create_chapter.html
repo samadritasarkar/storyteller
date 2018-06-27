@@ -29,8 +29,9 @@
         <div class="col-sm-8 col-md-9">
 
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
-                <li role="presentation"><a href="{% url 'detail' article.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'detail' article.id %}">View All Chapters</a></li>
                 <li role="presentation" class="active"><a href="{% url 'create_chapter' article.id %}">Add New Chapter</a></li>
+                <li role="presentation"><a href="{% url 'comment' article.id %}">View All Comments</a></li>
             </ul>
 
             <div class="panel panel-default">
@@ -51,6 +52,7 @@
                     </form>
                 </div>
             </div>
+
 
         </div>
 

@@ -1,0 +1,40 @@
+{% extends 'story/base.html' %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% for p in profile %}
+                        {% if p.photo %}
+                            <img src="{{ p.photo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>You have not uploaded any profile picture</h3>
+                        {% endif %}
+                        <br><br>
+                        <a href="{% url 'edit' %}">
+                            <button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-edit"></span>&nbsp; Edit Profile
+                            </button>
+                        </a>
+                        <br><br>
+                        <p>Name :&nbsp;{{ p.user.first_name }} &nbsp; {{ p.user.last_name }}</p>
+                        <p>Username :&nbsp;{{ p.user.username }}</p>
+                        <p>Email Id :&nbsp;{{ p.user.email }}</p>
+                        {% if p.date_of_birth %}
+                            <p>Date of birth :&nbsp;{{ p.date_of_birth }}</p>
+                        {% endif %}
+                        <a href="{% url 'password_change' %}">
+                                <button type="button" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;Change Password
+                                </button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+curl -i \
+  -H "Content-Type: application/json" \
+  -d '
+{ "auth": {
+    "identity": {
+      "methods": ["password"],
+      "password": {
+        "user": {
+          "name": "openedx",
+          "domain": { "name": "default" },
+          "password": "openedx"
+        }
+      }
+    },
+    "scope": {
+      "project": {
+        "name": "openedx",
+        "domain": { "name": "default" }
+      }
+    }
+  }
+}' \
+  "http://10.129.103.86:5000/v3/auth/tokens"

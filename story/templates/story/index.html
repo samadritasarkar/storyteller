@@ -2,8 +2,13 @@
 {% block albums_active %}active{% endblock %}
 
 {% block body %}
+<form class="navbar-form" role="search" method="get" action="">
+    <div class="form-group">
+        <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
+    </div>
+    <button type="submit" class="btn btn-default">Search</button>
+</form>
 <div class="articles-container container-fluid">
-
     <!-- Albums -->
     <div class="row">
         {% if articles %}
@@ -19,21 +24,6 @@
                             <h4>{{ article.chapter_set.count }} Parts</h4>
                             <!-- View Details -->
                             <a href="{% url 'read' article.id %}" class="btn btn-primary btn-sm" role="button">Read</a>
-                            <form action="" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="album_id" value="{{ article.id }}" />
-                                <button type="submit" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-thumbs-up"></span>
-                                </button>
-                            </form>
-
-                            <form action="" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="album_id" value="{{ article.id }}" />
-                                <button type="submit" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-comment"></span>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

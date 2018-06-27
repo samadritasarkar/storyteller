@@ -8,6 +8,39 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'story/style.css' %}"/>
+    <style>
+        ul.messages {
+            margin:10px 100px;
+            padding:0;
+            list-style-type:
+            none;
+        }
+        ul.messages li.success,
+        ul.messages li.warning,
+        ul.messages li.error,
+        ul.messages li.info {
+            margin:0;
+            padding:14px 20px;
+            list-style:none;
+            color:#fff;
+        }
+        ul.messages li.success { background:#81ce81; }
+        ul.messages li.success a { color:#0ac33e; }
+        ul.messages li.error { background:#a30029; color:#e9828e; }
+        ul.messages li.error a { color:#e9828e; }
+        ul.messages li.info { background:#faffae; color:#696b4e; }
+        ul.messages li.info a { color:#1586de; }
+        ul.messages li.warning { background:#de9404; }
+        ul.messages li.warning a { color:#f49000; }
+        ul.messages li a.close {
+            margin:0;
+            float:right;
+            opacity:1;
+            border:0;
+            box-shadow:none;
+            text-shadow:none;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -20,7 +53,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'index' %}">Storyteller</a>
+            <a class="navbar-brand" href="{% url 'newsfeed' %}">Storyteller</a>
         </div>
 
         <!-- Items -->
@@ -28,12 +61,6 @@
             <ul class="nav navbar-nav">
                 <li class="{% block articles_active %}{% endblock %}"><a href="{% url 'index' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp Recommended Articles</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="get" action="">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
-                </div>
-                <button type="submit" class="btn btn-default">Search</button>
-            </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a href="{% url 'my_article' %}">
@@ -46,13 +73,18 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'logout_user' %}">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                    <a href="{% url 'my_profile'%}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Hi {{ user.username }}
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Hi {{ user.username }}
+                    <a href="{% url 'user_list' %}">
+                        <span class="glyphicon glyphicon-" aria-hidden="true"></span>People
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout_user' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
                     </a>
                 </li>
             </ul>
@@ -60,7 +92,44 @@
 
     </div>
 </nav>
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">
+                            {{ message|safe }}
+                            <a href="" class="close">✖</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% block body %}
 {% endblock %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src=" http://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js "></script>
+<script>
+    var csrftoken = $.cookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $(document).ready(function(){
+        {% block domready %}
+        {% endblock %}
+    });
+</script>
 </body>
 </html>

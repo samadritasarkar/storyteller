@@ -2,8 +2,13 @@
 {% block albums_active %}active{% endblock %}
 
 {% block body %}
+<form class="navbar-form" role="search" method="get" action="">
+    <div class="form-group">
+        <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
+    </div>
+    <button type="submit" class="btn btn-default">Search</button>
+</form>
 <div class="articles-container container-fluid">
-
     <!-- Articles -->
     <div class="row">
         {% if articles %}
@@ -18,6 +23,7 @@
                             <h4>{{ article.author }}</h4>
                             <h4>{{ article.genre }}</h4>
                             <h4>{{ article.chapter_set.count }} Parts</h4>
+                            <h5>{{ article.comment_set.count }} Comments</h5>
                             <!-- View Details -->
                             <a href="{% url 'detail' article.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
 

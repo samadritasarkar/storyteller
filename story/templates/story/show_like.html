@@ -1,0 +1,69 @@
+{% extends 'story/base.html' %}
+{% block title %}{{ article }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Article Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if article.article_pic %}
+                        <img src="{{ article.article_pic.url }}" class="img-responsive">
+                    {% else %}
+                        <h3>No image to display</h3>
+                    {% endif %}
+                    <h1><a href="{% url 'read' article.id %}">{{ article.article_title }}</a> <small>{{ article.genre }}</small></h1>
+                    <h2>{{ article.author }}</h2>
+                    <h4>{{ article.chapter_set.count }} Parts</h4>
+                    <form action="{% url 'add_like' article.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="article_id" value="{{ article.id }}" />
+                        <button type="submit" class="btn btn-default btn-sm">
+                            {% if m %}
+                                <span class="glyphicon glyphicon-star" style="color: blue"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-star-empty" style="color: black"></span>
+                            {% endif %}
+                        </button>
+                    </form>
+
+                    <form action="{% url 'add_comment' article.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="article_id" value="{{ article.id }}" />
+                        <button type="submit" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-comment"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Chapter Info -->
+        <div class="col-sm-8 col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if m %}
+                        <h3>Following people liked this article:</h3>
+                        <table class="table">
+                            <tbody>
+                            {% for i in m %}
+                                <tr>
+                                    <td>{{ i.user.username }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <h3>This article has no likes yet.</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

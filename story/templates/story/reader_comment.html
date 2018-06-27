@@ -1,0 +1,68 @@
+{% extends 'story/base.html' %}
+{% block title %}Add a New Chapter{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                        <a href="">
+                            {% if article.article_pic %}
+                                <img src="{{ article.article_pic.url }}" class="img-responsive">
+                            {% else %}
+                                <h3>No image to display</h3>
+                            {% endif %}
+                        </a>
+                    <h1>{{ article.article_title }} <small>{{ article.genre }}</small></h1>
+                    <h2>{{ article.author }}</h2>
+                    <h3>{{ article.chapter_set.count }} Parts</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation"><a href="{% url 'add_comment' article.id %}">Add New Comment</a></li>
+                <li role="presentation"  class="active"><a href="{% url 'reader_comment' article.id %}">View All Comments</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All Comments</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Comments:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in article.comment_set.all %}
+                            <tr>
+                                <td><b>{{ comment.user.username }}</b> &nbsp {{ comment.text }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
